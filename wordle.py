@@ -63,5 +63,7 @@ def game(wordle, tries, wordlist):
 
         tries -= 1
 
-        
-game('beard',6, wordlist)  
+if __name__ == '__main__':
+    import sys
+    wordle, tries = sys.argv[1], int(sys.argv[2])
+    game(wordle, tries, wordlist)  
