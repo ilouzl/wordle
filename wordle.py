@@ -5,12 +5,6 @@ wordlist = [l.rstrip('\n') for l in words]
 #print(wordlist)
 
 
-TRIES = 6
-WORDLE = 'scare'
-
-voc = dict(zip('abcdefghijklmnopqrstuvwxyz',[]))
-
-
 def check(word, wordle):
     assert len(word) == 5, 'word should be of length 5'
     assert word in wordlist, 'word not in list'
@@ -25,11 +19,35 @@ def check(word, wordle):
         else:
             res = 'MIS'
 
-        result.append({i: res})
-    return result
+        result.append((c,res))
+    return result, word == wordle
 
 
-print(check('beard','their'))
+def guess(voc):
+    return 'their'
 
+def game(wordle, tries):
     
-    
+    voc = dict(zip('abcdefghijklmnopqrstuvwxyz',['NA']*22))
+    print(voc)    
+    while tries:
+        print("tries ", tries)
+        g = guess(voc)
+        print(g)
+        result, wordle_hit = check(g, wordle)
+        if wordle_hit:
+            print("YOU WON!!")
+            return
+        
+        print(result)
+        for c, r  in result:
+            print(c,r)
+            if voc[c] == 'NA':
+                voc[c] = r
+
+        print(voc)
+
+        tries -= 1
+
+        
+game('beard',3)  
