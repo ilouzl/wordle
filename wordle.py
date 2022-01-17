@@ -28,7 +28,7 @@ def guess(voc):
 
 def game(wordle, tries):
     
-    voc = dict(zip('abcdefghijklmnopqrstuvwxyz',['NA']*22))
+    voc = {k: ['NA'] for k in 'abcdefghijklmnopqrstuvwxyz'}
     print(voc)    
     while tries:
         print("tries ", tries)
@@ -40,14 +40,21 @@ def game(wordle, tries):
             return
         
         print(result)
-        for c, r  in result:
-            print(c,r)
-            if voc[c] == 'NA':
-                voc[c] = r
+        for i, res  in enumerate(result):
+            c, r = res
+            print(i,c,r)
+            if r == 'HIT':
+                voc[c] = [r, i]
+            elif r == 'INC':
+                if voc[c][0] != 'HIT':
+                    voc[c][0] = r
+                    voc[c].append(i)
+            else:
+                voc[c] = ['MIS']
 
         print(voc)
 
         tries -= 1
 
         
-game('beard',3)  
+game('beard',1)  
