@@ -32,15 +32,13 @@ def update_wordlist(wordlist, voc):
                 wordlist = [w for w in wordlist if c in w and w[i] != c]
     return wordlist
 
-def game(wordle, tries, wordlist):
-    
+def game(wordle, tries, wordlist): 
     voc = {k: ['NA'] for k in 'abcdefghijklmnopqrstuvwxyz'}
-    print(voc)    
-    while tries:
-        print("tries ", tries)
+    for t in range(tries):
+        print("try ", t + 1)
         wordlist = update_wordlist(wordlist, voc)
-        print(wordlist[:10])
         guess = wordlist[0]
+        print("Guess - \"%s\""%(guess))
         result, wordle_hit = check(guess, wordle)
         if wordle_hit:
             print("YOU WON!!")
@@ -49,7 +47,6 @@ def game(wordle, tries, wordlist):
         print(result)
         for i, res  in enumerate(result):
             c, r = res
-            print(i,c,r)
             if r == 'HIT':
                 voc[c] = [r, i]
             elif r == 'INC':
@@ -58,10 +55,6 @@ def game(wordle, tries, wordlist):
                     voc[c].append(i)
             else:
                 voc[c] = ['MIS']
-
-        print(voc)
-
-        tries -= 1
 
 if __name__ == '__main__':
     import sys
