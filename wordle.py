@@ -2,8 +2,6 @@
 with open('5-grams.csv','r') as f:
     words = f.readlines()
 wordlist = [l.rstrip('\n') for l in words]
-#print(wordlist)
-
 
 def check(word, wordle):
     assert len(word) == 5, 'word should be of length 5'
@@ -23,18 +21,27 @@ def check(word, wordle):
     return result, word == wordle
 
 
-def guess(voc):
-    return 'their'
+def update_wordlist(wordlist, voc):
+    for c, v in voc.items():
+        if v[0] == 'HIT':
+            wordlist = [w for w in wordlist if w[v[1]] == c]
+        if v[0] == 'MIS':
+            wordlist = [w for w in wordlist if c not in w]
+        if v[0] == 'INC':
+            for i in v[1:]:
+                wordlist = [w for w in wordlist if c in w and w[i] != c]
+    return wordlist
 
-def game(wordle, tries):
+def game(wordle, tries, wordlist):
     
     voc = {k: ['NA'] for k in 'abcdefghijklmnopqrstuvwxyz'}
     print(voc)    
     while tries:
         print("tries ", tries)
-        g = guess(voc)
-        print(g)
-        result, wordle_hit = check(g, wordle)
+        wordlist = update_wordlist(wordlist, voc)
+        print(wordlist[:10])
+        guess = wordlist[0]
+        result, wordle_hit = check(guess, wordle)
         if wordle_hit:
             print("YOU WON!!")
             return
@@ -57,4 +64,4 @@ def game(wordle, tries):
         tries -= 1
 
         
-game('beard',1)  
+game('beard',6, wordlist)  
